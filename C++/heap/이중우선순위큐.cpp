@@ -21,6 +21,12 @@ vector<int> solution(vector<string> operations) {
         }
     }
 
+    if (max_pivot >= pq.size() - min_pivot + 1) {
+        answer.push_back(0);
+        answer.push_back(0);
+        return answer;
+    }
+    
     int max;
     for (int i = 0; i < max_pivot; i++) {
         if (!pq.empty()) {
@@ -30,8 +36,8 @@ vector<int> solution(vector<string> operations) {
     }
     
     int min;
-    int left_size = pq.size() - min_pivot;
-    for (int i = 0; i < left_size; i++) {
+    int left_size = pq.size();
+    for (int i = 0; i < left_size - min_pivot; i++) {
         if (!pq.empty()) {
             min = pq.top();
             pq.pop();
