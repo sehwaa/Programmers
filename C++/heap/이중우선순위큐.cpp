@@ -1,51 +1,34 @@
 #include <string>
 #include <vector>
-#include <queue>
+#include <deque>
+#include <algorithm>
 #include <iostream>
 
 using namespace std;
 
 vector<int> solution(vector<string> operations) {
     vector<int> answer;
-    int max_pivot = 0;
-    int min_pivot = 0;
-    priority_queue< int, vector<int> > pq;
+    deque<int> q;
     
     for (int i = 0; i < operations.size(); i++) {
-        if (operations.at(i) == "D 1") {
-            max_pivot++;
-        } else if (operations.at(i) == "D -1") {
-            min_pivot++;
-        } else {
-            pq.push(atoi(operations.at(i).replace(0,2,"").c_str()));
+        if (operations.at(i) == "D 1" && q.size() > 0) {
+            sort(q.begin(), q.end());
+            q.pop_back();
+        } else if (operations.at(i) == "D -1" && q.size() > 0) {
+            sort(q.begin(), q.end());
+            q.pop_front();
+        } else if (operations.at(i).substr(0,1) == "I") {
+            q.push_back(stoi(operations.at(i).substr(2)));
         }
     }
-
-    if (max_pivot >= pq.size() - min_pivot + 1) {
+    
+    if (q.empty()) {
         answer.push_back(0);
         answer.push_back(0);
         return answer;
+    } else {
+        answer.push_back(q.back());
+        answer.push_back(q.front());
+        return answer;
     }
-    
-    int max;
-    for (int i = 0; i < max_pivot; i++) {
-        if (!pq.empty()) {
-            max = pq.top();
-            pq.pop();
-        }
-    }
-    
-    int min;
-    int left_size = pq.size();
-    for (int i = 0; i < left_size - min_pivot; i++) {
-        if (!pq.empty()) {
-            min = pq.top();
-            pq.pop();
-        }
-    }
-    
-    answer.push_back(max);
-    answer.push_back(min);
-    
-    return answer;
 }
