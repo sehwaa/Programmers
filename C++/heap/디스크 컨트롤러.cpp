@@ -6,6 +6,7 @@
 using namespace std;
 
 int solution(vector<vector<int>> jobs) {
+
     int answer = 0;
     int tSum = 0;
     int watingSum = 0;
