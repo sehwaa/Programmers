@@ -8,21 +8,14 @@ int answer = 0;
 int allComputers[MAX][MAX];
 bool visited[MAX][MAX];
 int ComputerCnt = 0;
-int count = 0;
 
-void dfs(int index) {
-    count++;
+void dfs(int node1, int node2) {
+    visited[node1][node2] = true;
+    visited[node2][node1] = true;
+    
     for (int i = 0; i < ComputerCnt; i++) {
-        if (i == index) continue;
-        if (allComputers[index][i] == 1) {
-            if (!visited[index][i]) {
-               visited[index][i] = true;
-               visited[i][index] = true; 
-                count++;
-                dfs(i);
-            } else {
-                count -= 1;
-            }
+        if (!visited[node2][i] && allComputers[node2][i] == 1) {
+            dfs(node2, i);
         }
     }
 }
@@ -37,11 +30,18 @@ int solution(int n, vector<vector<int>> computers) {
     }
     
     for (int i = 0; i < n; i++) {
-        dfs(i);
-        if (count >= 1) {
-            count = 0;
-            answer++;
+        int count = 0;
+        for (int j = 0; j < n; j++) {
+            if (i == j) continue;
+            if (!visited[i][j] && allComputers[i][j] == 1) {
+                dfs(i, j);
+                answer++;
+            } else if (allComputers[i][j] == 0) {
+                count++;
+            }
         }
+        
+        if (count == n-1) answer++;
     }
     return answer;
 }
