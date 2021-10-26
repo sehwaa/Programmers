@@ -11,4 +11,9 @@ def solution(number, k):
         su.append(number[i])
         i += 1
 
-    return "".join(su) + number[i:]
+    if k == 0:
+        return "".join(su) + number[i:]
+    else:
+        for i in range(k):
+            su.pop()
+        return "".join(su)
