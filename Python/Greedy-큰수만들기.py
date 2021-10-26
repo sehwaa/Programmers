@@ -2,7 +2,7 @@ def solution(number, k):
     su = []
     
     i = 0
-    while k > 0 and len(number) > 0:
+    while k > 0 and i < len(number):
         while len(su) > 0 and su[-1] < number[i]:
             su.pop()
             k -= 1
